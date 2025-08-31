@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ระบบเตือนให้ยาในวอร์ด</title>
+<link rel="manifest" href="manifest.json">
+<style>
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;margin:0;padding:10px;background:#f0f4f8;color:#333;}
+h1{color:#1e40af;text-align:center;margin-bottom:10px;}
+h2{color:#1e3a8a;margin-top:10px;margin-bottom:10px;}
+.hidden{display:none;}
+.container{max-width:600px;margin:0 auto;}
+.card{background:#fff;border-radius:12px;padding:15px;margin-bottom:12px;box-shadow:0 3px 6px rgba(0,0,0,0.1);transition:0.1s;}
+.card:hover{transform:translateY(-2px);box-shadow:0 5px 10px rgba(0,0,0,0.15);}
+button{background-color:#2563eb;color:#fff;border:none;padding:12px 20px;border-radius:8px;cursor:pointer;transition:0.2s;font-weight:500;margin:5px 0;width:100%;}
+button:hover{background-color:#1d4ed8;transform:translateY(-1px);}
+button.cancel{background-color:#9ca3af;}
+button.cancel:hover{background-color:#6b7280;}
+input[type="text"],input[type="time"]{padding:10px;border-radius:8px;border:1px solid #ccc;margin:5px 0;width:100%;box-sizing:border-box;font-size:1em;}
+label{display:block;margin:8px 0;}
+#tasks div{padding:10px;border-radius:8px;margin-bottom:8px;}
+.task-done{text-decoration:line-through;color:gray;}
+.task-pending{background-color:#d1fae5;}
+.task-soon{background-color:#fef3c7;}
+.task-late{background-color:#fee2e2;}
+#taskList{max-height:300px;overflow-y:auto;margin-top:10px;}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>ระบบเตือนให้ยาในวอร์ด</h1>
+
+<div id="homePage">
+  <button onclick="showAddBedPage()">➕ เพิ่มเตียง</button>
+  <h2>รายการเตียง</h2>
+  <div id="bedList"></div>
+</div>
+
+<div id="addBedPage" class="hidden">
+<h2>เพิ่มเตียงใหม่</h2>
+<label>ชื่อเตียง: <input id="bedName"></label>
+<label>ชื่อผู้ป่วย: <input id="patientName"></label>
+<h3>เพิ่มรายการยา</h3>
+<div id="tasks"></div>
+<button onclick="addTaskInput()">➕ เพิ่มยา</button>
+<button onclick="saveBed()">💾 บันทึก</button>
+<button class="cancel" onclick="showHomePage()">❌ ยกเลิก</button>
+</div>
+
+<div id="bedDetailPage" class="hidden">
+<button class="cancel" onclick="showHomePage()">⬅️ กลับ</button>
+<h2 id="bedDetailTitle"></h2>
+<div id="taskList"></div>
+</div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-messaging.js"></script>
+<script src="app.js"></script>
+
+<script>
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js')
+    .then(()=>console.log('SW registered'))
+    .catch(err=>console.log('SW failed', err));
+}
+</script>
+</body>
+</html>
